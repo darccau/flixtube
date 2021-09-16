@@ -1,0 +1,8 @@
+{
+  "name": "flixtube",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:darccau/flixtube.git",
+  "author": "duardopx <darccau@protonmail.com>",
+  "license": "MIT"
+}
