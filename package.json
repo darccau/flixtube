@@ -6,8 +6,8 @@
   "author": "duardopx <darccau@protonmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node src/index",
-    "dev": "nodemon src/index"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "devDependencies": {},
   "dependencies": {
