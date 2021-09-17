@@ -4,5 +4,13 @@
   "main": "index.js",
   "repository": "git@github.com:darccau/flixtube.git",
   "author": "duardopx <darccau@protonmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/index",
+    "dev": "nodemon src/index"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
