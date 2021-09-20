@@ -3,7 +3,12 @@ const path = require('path')
 const fs = require('fs')
 
 const app = express()
-const PORT = 3000
+
+if (!process.env.PORT) {
+  throw new Error('[!] Not especified port')
+}
+
+const PORT = process.env.PORT
 
 app.get('/video', (req, res) => {
   const videoPath = path.resolve(__dirname, '..', 'videos', 'sample.mp4')
