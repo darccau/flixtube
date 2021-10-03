@@ -1,32 +1,37 @@
 const express = require('express')
-const path = require('path')
-const fs = require('fs')
+const http = require('http')
 
 const app = express()
 
 if (!process.env.PORT) {
-  throw new Error('[!] Not especified port')
+  throw Error("Please specify the port number for the HTTP server with the environment variable PORT.");
 }
 
-const PORT = process.env.PORT
+if (!process.env.VIDEO_STORAGE_HOST) {
+  throw Error("Please specify the host name for the video storage microservice in variable VIDEO_STORAGE_HOST.");
+}
 
-app.get('/video', (req, res) => {
-  const videoPath = path.resolve(__dirname, '..', 'videos', 'sample.mp4')
+if (!process.env.VIDEO_STORAGE_PORT) {
+    throw Error("Please specify the port number for the video storage microservice in variable VIDEO_STORAGE_PORT.");
+}
 
-  fs.stat(videoPath, (err, stats) => {
-    if (err) {
-      console.error('An error occurred ')
-      res.sendStatus(500)
-      return
-    }
-
-    res.writeHead(200, {
-      'Content-Length': stats.size,
-      'Content-Type': 'video/mp4',
-    })
-    fs.createReadStream(videoPath).pipe(res)
-  })
-})
+app.get("/video", (req, res) => {
+    const forwardRequest = http.request( // Forward the request to the video storage microservice.
+        {
+            host: VIDEO_STORAGE_HOST,
+            port: VIDEO_STORAGE_PORT,
+            path: '/video?path=SampleVideo_1280x720_1mb.mp4', // Video path is hard-coded for the moment.
+            method: 'GET',
+            headers: req.headers
+        }, 
+        forwardResponse => {
+            res.writeHeader(forwardResponse.statusCode, forwardResponse.headers);
+            forwardResponse.pipe(res);
+        }
+    );
+    
+    req.pipe(forwardRequest);
+});
 
 app.listen(PORT, () => {
   console.log(`[*] Listen on http://localhost:${PORT}`)
