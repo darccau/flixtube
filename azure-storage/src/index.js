@@ -3,13 +3,21 @@ import azure from 'azure-storage'
 
 const app = express()
 
+if (!process.env.PORT) {
+  throw Error("Especify environment variable [PORT] ")
+}
+
+if (!process.env.STORAGE_ACCOUNT_NAME) {
+  throw Error("Especify environment variable [STORAGE_ACCOUNT_NAME]")
+}
+
+if (!process.env.STORAGE_ACCESS_KEY) {
+  throw Error("Especify environment variable [STORAGE_ACCESS_KEY]")
+}
+
 const PORT = process.env.PORT
 const STORAGE_ACCOUNT_NAME = process.env.STORAGE_ACCOUNT_NAME
 const STORAGE_ACCESS_KEY = process.env.STORAGE_ACCESS_KEY
-
-console.log(PORT)
-console.log(STORAGE_ACCOUNT_NAME)
-console.log(STORAGE_ACCESS_KEY)
 
 const createBlobService = () => {
   const blobService = azure.createBlobService(STORAGE_ACCOUNT_NAME,
