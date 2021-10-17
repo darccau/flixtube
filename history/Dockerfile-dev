@@ -3,7 +3,6 @@ FROM node:16.9.0-alpine
 WORKDIR /usr/src/app
 COPY package*.json ./
 
-# change it to yarn
-CMD npm config set cache-min 9999999 && \
-    npm install && \
-    npm run start:dev
+CMD yarn config set cache-min 9999999 && \
+    yarn install && \
+    yarn run dev
