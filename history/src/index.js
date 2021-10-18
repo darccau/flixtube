@@ -1,29 +1,30 @@
 const express = require('express')
 
 function setupHandlers(app) {
+  // ... THIS IS A STUB MICROSERVICE: SETUP YOUR HTTP ROUTES HERE ...
 }
 
 function startHttpServer() {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const app = express()
     setupHandlers(app)
 
-    const PORT = process.env.PORT && 
-      parseInt(process.env.PORT) || 3000
-    app.listen(PORT, () => {
+    const port = (process.env.PORT && parseInt(process.env.PORT)) || 3000
+    app.listen(port, () => {
       resolve()
     })
   })
 }
 
 function main() {
-  console.log('hello world')
-  return startHttpServer
+  console.log('Hello world!')
+
+  return startHttpServer()
 }
 
 main()
-.then(() => console.log("Microservices online"))
-.catch(err => {
-  console.error("Microservice failed during the start process")
-  console.error(err && err.stack || err)
-})
+  .then(() => console.log('Microservice online.'))
+  .catch((err) => {
+    console.error('Microservice failed to start.')
+    console.error((err && err.stack) || err)
+  })
