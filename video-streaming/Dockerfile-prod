@@ -2,7 +2,9 @@ FROM node:16.9.0-alpine
 
 WORKDIR /usr/src/app
 COPY package*.json ./
-RUN yarn install
-COPY ./src ./src
-COPY ./videos ./videos
+
+RUN yarn install --production=true
+COPY  ./src ./src
+COPY  ./videos ./vedeos
+
 CMD yarn start
