@@ -1,17 +1,24 @@
 version: '3'
 services:
+  db:
+    image: mongo:latest
+    container_name: db
+    ports:
+      - "4000:27017"
+    restart: always
+
   video-streaming:
     image: video-streaming
-    build:
+    build: 
       context: ./video-streaming
       dockerfile: Dockerfile-dev
     container_name: video-streaming
     volumes:
-      - /tmp/video-streaming/yarn-cache:/root/.yarn:z
+      - /tmp/video-streaming/npm-cache:/root/.npm:z
       - ./video-streaming/src:/usr/src/app/src:z
       - ./video-streaming/videos:/usr/src/app/videos:z
     ports:
-      - "4000:80"
+      - "4001:80"
     environment:
       - PORT=80
       - NODE_ENV=development
@@ -19,16 +26,20 @@ services:
 
   history:
     image: history
-    build:
+    build: 
       context: ./history
       dockerfile: Dockerfile-dev
     container_name: history
     volumes:
-      - /tmp/history/yarn-cache:/root/.yarn:z
+      - /tmp/history/npm-cache:/root/.npm:z
       - ./history/src:/usr/src/app/src:z
     ports:
       - "4002:80"
     environment:
       - PORT=80
+      - DBHOST=mongodb://db:27017
+      - DBNAME=history
       - NODE_ENV=development
+    depends_on:
+      - db
     restart: "no"
