@@ -29,7 +29,7 @@ const RABBIT = process.env.RABBIT
 // Connect to the database.
 //
 function connectDb() {
-  return mongodb.MongoClient.connect(DBHOST).then((client) => {
+  return mongodb.MongoClient.connect(DBHOST).then(client => {
     return client.db(DBNAME)
   })
 }
@@ -42,7 +42,7 @@ function connectRabbit() {
 
   return amqp
     .connect(RABBIT) // Connect to the RabbitMQ server.
-    .then((messagingConnection) => {
+    .then(messagingConnection => {
       console.log('Connected to RabbitMQ.')
 
       return messagingConnection.createChannel() // Create a RabbitMQ messaging channel.
@@ -77,7 +77,7 @@ function setupHandlers(app, db, messageChannel) {
     .then(() => {
       return messageChannel.assertQueue('', { exclusive: true }) // Create an anonyous queue.
     })
-    .then((response) => {
+    .then(response => {
       const queueName = response.queue
       console.log(
         `Created queue ${queueName}, binding it to "viewed" exchange.`
@@ -94,7 +94,7 @@ function setupHandlers(app, db, messageChannel) {
 // Start the HTTP server.
 //
 function startHttpServer(db, messageChannel) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     // Wrap in a promise so we can be notified when the server has started.
     const app = express()
     app.use(bodyParser.json()) // Enable JSON body for HTTP requests.
@@ -112,10 +112,10 @@ function startHttpServer(db, messageChannel) {
 //
 function main() {
   return connectDb() // Connect to the database...
-    .then((db) => {
+    .then(db => {
       // then...
       return connectRabbit() // connect to RabbitMQ...
-        .then((messageChannel) => {
+        .then(messageChannel => {
           // then...
           return startHttpServer(db, messageChannel) // start the HTTP server.
         })
@@ -124,7 +124,7 @@ function main() {
 
 main()
   .then(() => console.log('Microservice online.'))
-  .catch((err) => {
+  .catch(err => {
     console.error('Microservice failed to start.')
     console.error((err && err.stack) || err)
   })
