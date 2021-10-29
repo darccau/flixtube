@@ -18,12 +18,12 @@ function connectRabbit() {
 
   return amqp
     .connect(RABBIT) // Connect to the RabbitMQ server.
-    .then((connection) => {
+    .then(connection => {
       console.log('Connected to RabbitMQ.')
 
       return connection
         .createChannel() // Create a RabbitMQ messaging channel.
-        .then((messageChannel) => {
+        .then(messageChannel => {
           return messageChannel
             .assertExchange('viewed', 'fanout') // Assert that we have a "viewed" exchange.
             .then(() => {
@@ -75,7 +75,7 @@ function setupHandlers(app, messageChannel) {
 // Start the HTTP server.
 //
 function startHttpServer(messageChannel) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     // Wrap in a promise so we can be notified when the server has started.
     const app = express()
     setupHandlers(app, messageChannel)
@@ -92,7 +92,7 @@ function startHttpServer(messageChannel) {
 //
 function main() {
   return connectRabbit() // Connect to RabbitMQ...
-    .then((messageChannel) => {
+    .then(messageChannel => {
       // then...
       return startHttpServer(messageChannel) // start the HTTP server.
     })
@@ -100,7 +100,7 @@ function main() {
 
 main()
   .then(() => console.log('Microservice online.'))
-  .catch((err) => {
+  .catch(err => {
     console.error('Microservice failed to start.')
     console.error((err && err.stack) || err)
   })
