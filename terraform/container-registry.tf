@@ -1,7 +1,9 @@
+# Creates a container registry on Azure so that you can publish your Docker images.
+
 resource "azurerm_container_registry" "container_registry" {
-  name                = "fl1xtub3"
+  name                = var.app_name
   resource_group_name = azurerm_resource_group.flixtube.name
-  location            = "westus"
+  location            = var.location
   admin_enabled       = true
   sku                 = "Basic"
 }
@@ -15,6 +17,6 @@ output "registry_un" {
 }
 
 output "registry_pw" {
-  value = azurerm_container_registry.container_registry.admin_password
+  value =   azurerm_container_registry.container_registry.admin_password
   sensitive = true
 }
