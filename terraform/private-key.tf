@@ -1,9 +1,9 @@
 resource "tls_private_key" "key" {
-    algorithm = "RSA"
+  algorithm = "RSA"
 }
 
 output "cluster_private_key" {
-  value = tls_private_key.key.private_key_pem
+  value     = tls_private_key.key.private_key_pem
   sensitive = true
 }
 
